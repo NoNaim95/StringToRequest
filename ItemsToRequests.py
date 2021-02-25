@@ -2,7 +2,7 @@ import requests
 import bs4
 import base64
 
-def parseFile(file):
+def parseBurpFile(file):
     s = ""
     with open(file,"r")as file:
         s = file.readlines()
@@ -13,7 +13,6 @@ def parseFile(file):
     return arr[0]
 
 
-
 def httptorequest(req):
     request = requests.Request(
             method=getMethod(req),
@@ -22,6 +21,7 @@ def httptorequest(req):
             data=getContent(req)
             )
     return request
+
 
 def httptorequests(reqarr):
     requestobjects = []
@@ -61,10 +61,3 @@ def getContent(req):
     if getMethod == "POST":return req.split('\n')[-1]
     else:return
 
-
-#httptoreq(parseFile("/tmp/items"))
-
-reqs = parseFile("/tmp/items")
-for req in httptorequests(reqs):
-    print(req.headers["User-Agent"])
-    print("\n\n")
