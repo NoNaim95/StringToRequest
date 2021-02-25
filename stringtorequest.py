@@ -29,6 +29,12 @@ def httptorequests(reqarr):
         requestobjects.append(httptorequest(req))
     return requestobjects
 
+def filetorequests(file):
+    return httptorequests(parseBurpFile(file))
+
+
+def filetorequest(file,index=0):
+    return httptorequest(parseBurpFile(file)[index])
 
 def getMethod(req):
     return req.split(' ')[0]
@@ -37,7 +43,7 @@ def getMethod(req):
 def getUrl(req):
     host = getHeader(req,"Host")
     path = req.split(' ')[1]
-    return host+path
+    return "http://"+host+path
 
 
 def getHeaders(req,blacklist=[]):
@@ -47,7 +53,7 @@ def getHeaders(req,blacklist=[]):
     headers = req[req.find('\n')+1:-3].split('\n')
     for header in headers:
         key = header.split(": ")[0]
-        value = header.split(": ")[1]
+        value = header.split(": ")[1].replace('\r','')
         if not key in blacklist:
             dic[key] = value
     return dic
@@ -60,4 +66,3 @@ def getHeader(req,key):
 def getContent(req):
     if getMethod == "POST":return req.split('\n')[-1]
     else:return
-
