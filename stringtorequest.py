@@ -78,7 +78,7 @@ def getHeaders(req,blacklist=["Upgrade-Insecure-Request"]):
     dic = {}
     req.rstrip()
     req.replace('\r','')
-    headers = req[req.find('\n')+1:-req[::-1].find('\n')].split('\n')
+    headers = req[req.find('\n')+1:-(req[::-1].find('\n')+1)].split('\n')
     for header in headers:
         if ": " in header:
             key = header.split(": ")[0]
